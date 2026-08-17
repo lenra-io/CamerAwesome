@@ -58,6 +58,7 @@ AVCaptureAudioDataOutputSampleBufferDelegate>
 - (void)start;
 - (void)stop;
 - (void)refresh;
+- (CGFloat)getMinZoom;
 - (CGFloat)getMaxZoom;
 - (void)setPreviewSize:(CGSize)previewSize error:(FlutterError * _Nullable __autoreleasing * _Nonnull)error;
 - (CGSize)getEffectivPreviewSize;

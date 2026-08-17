@@ -236,6 +236,10 @@
   return _currentPreviewSize;
 }
 
+- (CGFloat)getMinZoom {
+  return _captureDevice.minAvailableVideoZoomFactor;
+}
+
 // Get max zoom level
 - (CGFloat)getMaxZoom {
   CGFloat maxZoom = _captureDevice.activeFormat.videoMaxZoomFactor;
@@ -338,8 +342,9 @@
 
 /// Set zoom level
 - (void)setZoom:(float)value error:(FlutterError * _Nullable __autoreleasing * _Nonnull)error {
+  CGFloat minZoom = [self getMinZoom];
   CGFloat maxZoom = [self getMaxZoom];
-  CGFloat scaledZoom = value * (maxZoom - 1.0f) + 1.0f;
+  CGFloat scaledZoom = value * (maxZoom - minZoom) + minZoom;
   
   NSError *zoomError;
   if ([_captureDevice lockForConfiguration:&zoomError]) {
