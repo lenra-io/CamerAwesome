@@ -48,6 +48,10 @@ class OrientationStreamListener(
         orientationEventListener.enable()
     }
 
+    fun start() {
+        orientationEventListener.enable()
+    }
+
     fun stop() {
         orientationEventListener.disable()
     }
