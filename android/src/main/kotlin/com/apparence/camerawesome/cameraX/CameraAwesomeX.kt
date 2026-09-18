@@ -72,6 +72,7 @@ class CameraAwesomeX : CameraInterface, FlutterPlugin, ActivityAware {
     private var lastRecordedVideos: List<BehaviorSubject<Boolean>>? = null
     private var lastRecordedVideoSubscriptions: MutableList<Disposable>? = null
     private var colorMatrix: List<Double>? = null
+    private var cameraStopped = false
 
     private val noneFilter: List<Double> = listOf(
         1.0,
@@ -568,13 +569,20 @@ class CameraAwesomeX : CameraInterface, FlutterPlugin, ActivityAware {
 
 
     override fun start(): Boolean {
-        // Already started on setUp
+        // setUp() already binds the use cases for the first start; after a
+        // stop() unbound them, rebind before reporting the camera as started.
+        if (cameraStopped) {
+            cameraState.updateLifecycle(activity!!)
+            orientationStreamListener?.start()
+            cameraStopped = false
+        }
         return true
     }
 
     override fun stop(): Boolean {
         orientationStreamListener?.stop()
         cameraState.stop()
+        cameraStopped = true
         return true
     }
 
